@@ -2,14 +2,23 @@
 # Exit immediately if a command exits with a non-zero status.
 set -e
 
-mkdir -p url_data
-cd ./url_data
+{
+  echo ----- "$(date)" ------
 
-# TODO: error handling when download fails
-echo "Fetching data from PhishTank..."
-wget http://data.phishtank.com/data/online-valid.json.gz -O PhishTank.gz --show-progress --progress=bar:force:noscroll
-gunzip -c PhishTank.gz > PhishTank.json
-rm PhishTank.gz
+  # create download data directory
+  mkdir -p url_data
 
-echo "Fetching data from OpenPhish..."
-wget https://openphish.com/feed.txt -O OpenPhish.txt
+  # create log directory
+  mkdir -p log
+
+  # TODO: error handling when download fails
+  echo "Fetching data from PhishTank..."
+  wget http://data.phishtank.com/data/online-valid.json.gz -O url_data/PhishTank.gz --show-progress --progress=bar:force:noscroll
+  gunzip -c url_data/PhishTank.gz > url_data/PhishTank.json
+  rm url_data/PhishTank.gz
+
+  echo "Fetching data from OpenPhish..."
+  wget https://openphish.com/feed.txt -O url_data/OpenPhish.txt
+
+  echo "Crawler successfully ends"
+} 2>&1| tee log/shell.log
