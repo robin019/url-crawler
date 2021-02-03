@@ -10,4 +10,4 @@ try:
                                   port=config.DATABASE_PORT,
                                   database=config.DATABASE_NAME)
 except:
-    logger.logging.error('Catch an exception.', exc_info=True)
+    logger.error('Catch an exception.', exc_info=True)
