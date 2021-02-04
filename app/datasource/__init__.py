@@ -6,6 +6,8 @@ from datetime import datetime
 
 
 class DataSource(metaclass=abc.ABCMeta):
+    # Check unique constraint first and insert into two tables (malicious_url & malicious_url_detail)
+    # Since the input URL may be extremely long, the unique constraint is set on md5(lower(url))
     url_parameterized_insert = f"""WITH ins0 AS(
 INSERT INTO malicious_url (url) VALUES (%s) ON CONFLICT(md5(lower(url))) DO UPDATE SET url = %s RETURNING id)
 INSERT INTO malicious_url_detail
